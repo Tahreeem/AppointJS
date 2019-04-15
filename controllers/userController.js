@@ -75,7 +75,7 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));;
   },
-  
+
   logout: function (req, res) {
     sessionStorage.clearItems();
     console.log("request received to logout");
@@ -134,14 +134,10 @@ module.exports = {
     //   resolve({given_name: "f",email: "f@gmail.com"})})
     verify(req.body.idtoken)  //req.body.idtoken
       .then(result => {
-        console.log(
-          "result from firebase validate function: " + JSON.stringify(result)
-        );
         //console.log ("result from firebase" + JSON.stringify(result));
         if (!(result.name && result.email && result.email_verified)) {
           throw err("invalid token");
         }
-        token = result.sub;
         return result;
       })
       .then(result => findUserByUserId(result.given_name, result.email))

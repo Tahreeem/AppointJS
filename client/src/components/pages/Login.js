@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import API from "../common/util/API";
+=======
+>>>>>>> 963833eda915b5daa30e195fc0f98ba4f401b79b
 import React from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
@@ -52,6 +55,7 @@ class Login extends React.Component {
         currentUser = JSON.stringify(currentUser);
         currentUser = JSON.parse(currentUser);
         sessionStorage.setItem("token",currentUser.stsTokenManager.accessToken);
+        window.location.href = "/appointments"
       }
     }
   };
