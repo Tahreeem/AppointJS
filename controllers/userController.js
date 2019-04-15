@@ -77,8 +77,6 @@ module.exports = {
   },
 
   logout: function (req, res) {
-    sessionStorage.clearItems();
-    console.log("request received to logout");
     res.end();
   },
 
