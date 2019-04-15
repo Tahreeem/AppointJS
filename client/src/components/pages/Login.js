@@ -65,12 +65,13 @@ class Login extends React.Component {
         this.setState({ isSignedIn: !!user });
         // user = JSON.stringify(user);
         // user = JSON.parse(user);
+        var token = sessionStorage.getItem("token");
         var user = {
           email: user.email,
           name: user.displayName,
-          token: sessionStorage.getItem("token")
+          token: token
         };
-        API.validateFirebase(user);
+        if (token) {API.validateFirebase(user);}
       });
 
   }

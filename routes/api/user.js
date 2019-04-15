@@ -21,6 +21,6 @@ router.route("/logout").post(userController.logout);
 router.route("/initializeuser").post(userController.initializeUser);
 
 // Matches with "/api/user/initializefirebase"
-router.route("/initializefirebase").post(userController.validateFirebase);
+router.route("/validatefirebase").post(userController.validateFirebase);
 
 module.exports = router;

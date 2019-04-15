@@ -77,7 +77,7 @@ var API = {
     return axios.post(BASE_USR + "/initializeUser", user); //{user:user}
   },
   validateFirebase: function (user) {
-    return axios.post(BASE_USR + "/initializeFirebase", user);
+    return axios.post(BASE_USR + "/validateFirebase", user);
   }
 };
 
