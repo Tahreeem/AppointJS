@@ -9,12 +9,18 @@ router
   .get(userController.retrieveAll);
 
 // Matches with "/api/user/:id"
-router.route("/:id").get(userController.findByTokenId);
+router.route("/:id").get(userController.findByTokenId);   //findUserByToken);
 
 // Matches with "/api/user/tokensignin"
 router.route("/tokensignin").post(userController.validateOauthID);
 
 // Matches with "/api/user/logout"
 router.route("/logout").post(userController.logout);
+
+// Matches with "/api/user/initializeuser"
+router.route("/initializeuser").post(userController.initializeUser);
+
+// Matches with "/api/user/initializefirebase"
+router.route("/initializefirebase").post(userController.validateFirebase);
 
 module.exports = router;

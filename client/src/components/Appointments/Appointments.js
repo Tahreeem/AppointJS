@@ -5,7 +5,7 @@ import { ReactAgenda, ReactAgendaCtrl, Modal } from "react-agenda";
 require("moment/locale/en-ca.js");
 var moment = require("moment");
 
-var now =   new Date();
+var now = new Date();
 var colors = {
   "color-1": "rgba(102, 195, 131 , 1)",
   "color-2": "rgba(242, 177, 52, 1)",
@@ -95,12 +95,12 @@ export default class Appointment extends Component {
     }
   }
   handleItemEdit(item, openModal) {
-   
-        if (item && openModal === true) {
-          this.setState({ selected: [item] });
-          return this._openModal();
-        }
-      
+
+    if (item && openModal === true) {
+      this.setState({ selected: [item] });
+      return this._openModal();
+    }
+
   }
   handleCellSelection(item, openModal) {
     console.log("handle cell selection " + item);
@@ -153,7 +153,7 @@ export default class Appointment extends Component {
     API.retrieveApptById(item._id.toString())
       .then(appt => {
 
-        console.log ('appt ' + appt);
+        console.log('appt ' + appt);
         if (
           appt.status === 200 &&
           appt.data.calenderOwnerUserId === this.state.userID
@@ -170,8 +170,8 @@ export default class Appointment extends Component {
   }
 
   addNewEvent(items, newItems) {
-   
-    this.setState({ showModal: false, selected: []});
+
+    this.setState({ showModal: false, selected: [] });
     this._closeModal();
     API.scheduleAppt({
       ...newItems,
@@ -180,11 +180,11 @@ export default class Appointment extends Component {
     })
       .then(result => {
 
-        var index = _.findIndex (items, (item) => {
+        var index = _.findIndex(items, (item) => {
           return item._id === newItems._id
         }
         );
-        items[index] = {...items[index], _id: result.data._id };
+        items[index] = { ...items[index], _id: result.data._id };
         this.setState({ items: items });
       })
       .catch(err => console.log("Error adding new appointment: " + err));
@@ -305,8 +305,8 @@ export default class Appointment extends Component {
             </div>
           </Modal>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </div>
     );
   }

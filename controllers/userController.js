@@ -42,8 +42,9 @@ module.exports = {
    * @param {*} req
    * @param {*} res
    */
-  findByTokenId: function(req, res) {
-    db.Session.findOne({ tokenId: req.params.id })
+  findByTokenId: function (req, res) {
+    console.log(req);
+    db.Session.findOne({ tokenId: String(req.params.id) })
       .then(dbModel => {
         console.log(dbModel);
         res.json(dbModel);
@@ -51,7 +52,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  findUserByToken: function(req, res) {
+  findUserByToken: function (req, res) {
     // upsert on userId
     const current = new Date();
     var expiryDate = new Date();
@@ -63,7 +64,19 @@ module.exports = {
     );
   },
 
-  logout: function(req, res) {
+  initializeUser: async function (req, res) {
+    return db.User.findOneAndUpdate(
+      { userId: req.body.userId },
+      {
+        name: req.body.name
+      },
+      { returnNewDocument: true, upsert: true }
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));;
+  },
+  
+  logout: function (req, res) {
     sessionStorage.clearItems();
     console.log("request received to logout");
     res.end();
@@ -74,7 +87,7 @@ module.exports = {
    * @param {*} req
    * @param {*} res
    */
-  retrieveAll: function(req, res) {
+  retrieveAll: function (req, res) {
     db.User.find({})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -85,7 +98,7 @@ module.exports = {
    * @param {*} req
    * @param {*} res
    */
-  register: function(req, res) {
+  register: function (req, res) {
     db.User.create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -96,7 +109,7 @@ module.exports = {
    * @param {*} req
    * @param {*} res
    */
-  updateUser: function(req, res) {
+  updateUser: function (req, res) {
     console.log(req.body);
     db.User.findOneAndUpdate({ _id: req.body.userId }, req.body.user, {
       new: true
@@ -113,13 +126,13 @@ module.exports = {
    * @param {*} req
    * @param {*} res
    */
-  validateOauthID: function(req, res) {
-    var token = "";
+  validateOauthID: function (req, res) {
+    var token = req.body.idtoken;
     // test code
     // return new Promise ((resolve, reject ) => {
     //   token="abc1234def";
     //   resolve({given_name: "f",email: "f@gmail.com"})})
-    verify(req.body.idtoken)
+    verify(req.body.idtoken)  //req.body.idtoken
       .then(result => {
         console.log(
           "result from firebase validate function: " + JSON.stringify(result)
@@ -139,6 +152,32 @@ module.exports = {
             tokenId: token,
             expiryDate: new Date(),
             user: user._id,
+            name: user.given_name
+          },
+          { returnNewDocument: true, upsert: true }
+        );
+      })
+      .then(() => {
+        res.status(200).json({
+          token: token
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(422).json(err);
+      });
+  },
+  validateFirebase: async function (req, res) {
+    var token = req.body.token;
+    return findUserByUserId(req.body.name, req.body.email)
+      .then(user => {
+        return db.Session.findOneAndUpdate(
+          {
+            tokenId: token
+          },
+          {
+            user: user._id,
+            expiryDate: new Date(),
             name: user.given_name
           },
           { returnNewDocument: true, upsert: true }
