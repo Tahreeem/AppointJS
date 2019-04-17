@@ -1,6 +1,6 @@
 # AppointJS
 
-_AppointJS_ is deployed to Heroku. Please check it out [here.](https://appt-booking-app.herokuapp.com/)
+_AppointJS_ is deployed to Heroku. Please check it out [here.](https://appointjs.herokuapp.com/)
 
 <img src="https://github.com/sherriejudy/project3/blob/master/client/src/components/pages/main/Booking.png"></img>
 
