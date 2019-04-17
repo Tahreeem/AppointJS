@@ -64,8 +64,8 @@ class Login extends React.Component {
       .auth()
       .onAuthStateChanged(user => {
         this.setState({ isSignedIn: !!user });
-        // user = JSON.stringify(user);
-        // user = JSON.parse(user);
+        user = JSON.stringify(user);
+        user = JSON.parse(user);
         var token = sessionStorage.getItem("token");
         var user = {
           email: user.email,

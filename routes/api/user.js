@@ -11,11 +11,8 @@ router
 // Matches with "/api/user/:id"
 router.route("/:id").get(userController.findByTokenId);   //findUserByToken);
 
-// Matches with "/api/user/tokensignin"
-router.route("/tokensignin").post(userController.validateOauthID);
-
 // Matches with "/api/user/logout"
-router.route("/logout").post(userController.logout);
+router.route("/logout").delete(userController.logout);    //logs out of session only
 
 // Matches with "/api/user/initializeuser"
 router.route("/initializeuser").post(userController.initializeUser);
