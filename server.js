@@ -20,9 +20,9 @@ mongoose.connect(process.env.REACT_APP_MONGODB_URI
   || "mongodb://localhost/bookings",
   { useNewUrlParser: true, useCreateIndex: true, } );
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
   
 app.listen(PORT, function() {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
