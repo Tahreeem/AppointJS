@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI 
+mongoose.connect(process.env.REACT_APP_MONGODB_URI
   || "mongodb://localhost/bookings",
   { useNewUrlParser: true, useCreateIndex: true, } );
 
