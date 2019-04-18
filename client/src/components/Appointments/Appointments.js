@@ -54,41 +54,39 @@ export default class Appointment extends Component {
 
   componentDidMount() {
     let token = sessionStorage.getItem("token");
-    if (token) {
-      API.retrieveUser(token)
-        .then(session => session.data.user)
-        .then(userID => {
-          const todayDate = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate(),
-            10,
-            0
-          );
-          this.setState({ userID: userID });
-          return API.retrieveAppt(userID, moment(todayDate).format("YYYY-MM-DD"));
-        })
-        .then(result => {
-          if (result.status === 200) {
-            items = _.map(result.data, booking => {
-              var start = new Date(booking.startDate);
-              var end = new Date(booking.endDate);
-              return {
-                _id: booking._id,
-                name: booking.description,
-                startDateTime: start,
-                endDateTime: end,
-                classes: booking.color
-              };
-            });
-            this.setState({
-              items: items
-            });
-          }
-        });
-    }
-    else console.log("No Token in session storage");
-
+    //API.retrieveUser(token)
+    //API.retrieveUserPost(token)
+    API.retrieveUserPost2(token)
+      .then(session => session.data.user)
+      .then(userID => {
+        const todayDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          10,
+          0
+        );
+        this.setState({ userID: userID });
+        return API.retrieveAppt(userID, moment(todayDate).format("YYYY-MM-DD"));
+      })
+      .then(result => {
+        if (result.status === 200) {
+          items = _.map(result.data, booking => {
+            var start = new Date(booking.startDate);
+            var end = new Date(booking.endDate);
+            return {
+              _id: booking._id,
+              name: booking.description,
+              startDateTime: start,
+              endDateTime: end,
+              classes: booking.color
+            };
+          });
+          this.setState({
+            items: items
+          });
+        }
+      });
   }
 
   componentWillReceiveProps(next, last) {

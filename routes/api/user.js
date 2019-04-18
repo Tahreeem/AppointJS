@@ -9,10 +9,14 @@ router
   .get(userController.retrieveAll);
 
 // Matches with "/api/user/:id"
-router.route("/:id").get(userController.findByTokenId);   //findUserByToken);
+//router.route("/:id").get(userController.findByTokenId);   //findUserByToken);
+//router.route("/:id").post(userController.findUserByToken);
+//router.route("/:id").post(userController.findUserByTokenPost);
+router.route("/token").post(userController.findUserByTokenPost2);
+
 
 // Matches with "/api/user/logout"
-router.route("/logout").delete(userController.logout);    //logs out of session only
+router.route("/logout").delete(userController.logout);
 
 // Matches with "/api/user/initializeuser"
 router.route("/initializeuser").post(userController.initializeUser);

@@ -52,6 +52,7 @@ class Login extends React.Component {
         API.initializeUser(user);
         currentUser = JSON.stringify(currentUser);
         currentUser = JSON.parse(currentUser);
+        //sessionStorage.setItem("expirationTime", currentUser.stsTokenManager.expirationTime);
         sessionStorage.setItem("token", currentUser.stsTokenManager.accessToken);
         window.location.href = "/appointments"
       }
@@ -64,8 +65,8 @@ class Login extends React.Component {
       .auth()
       .onAuthStateChanged(user => {
         this.setState({ isSignedIn: !!user });
-        user = JSON.stringify(user);
-        user = JSON.parse(user);
+        // user = JSON.stringify(user);
+        // user = JSON.parse(user);
         var token = sessionStorage.getItem("token");
         var user = {
           email: user.email,

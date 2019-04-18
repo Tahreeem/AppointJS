@@ -3,10 +3,16 @@ const axios = require("axios");
 const BASE_USR = "/api/user";
 const BASE_APPT = "/api/schedule";
 
-
 var API = {
   retrieveUser: function (token) {
     return axios.get(BASE_USR + "/" + token);
+  },
+  retrieveUserPost: function (token) {
+    return axios.post(BASE_USR + "/" + token);
+  },
+  retrieveUserPost2: function (token) {
+    const config = { token };
+    return axios.post(BASE_USR + "/token",config);
   },
   retrieveAllUsers: function () {
     return axios.get(BASE_USR);
@@ -46,6 +52,7 @@ var API = {
     const config = {
       apptId: apptId
     };
+    console.log(config);
     return axios.delete(BASE_APPT + "/delete", { data: config });
   },
   retrieveAppt: function (id, date) {
@@ -59,10 +66,19 @@ var API = {
       userIds: userIds,
       date: date
     };
+    console.log("---config---");
+    console.log(config);
     return axios.post(BASE_APPT + "/All", config);
   },
   logout: function () {
     return axios.delete(BASE_USR + "/logout");
+  },
+  loginPost: function () {
+    var id_token = sessionStorage.getItem("token");
+    const config = {
+      idtoken: id_token
+    };
+    return axios.post(BASE_USR + "/tokensignin", config);
   },
   initializeUser: function (user) {
     return axios.post(BASE_USR + "/initializeUser", user); //{user:user}
