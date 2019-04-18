@@ -52,6 +52,7 @@ class Login extends React.Component {
         API.initializeUser(user);
         currentUser = JSON.stringify(currentUser);
         currentUser = JSON.parse(currentUser);
+        //sessionStorage.setItem("expirationTime", currentUser.stsTokenManager.expirationTime);
         sessionStorage.setItem("token", currentUser.stsTokenManager.accessToken);
         window.location.href = "/appointments"
       }
