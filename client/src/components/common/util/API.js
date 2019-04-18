@@ -7,12 +7,9 @@ var API = {
   retrieveUser: function (token) {
     return axios.get(BASE_USR + "/" + token);
   },
-  retrieveUserPost: function (token) {
-    return axios.post(BASE_USR + "/" + token);
-  },
-  retrieveUserPost2: function (token) {
-    const config = { token };
-    return axios.post(BASE_USR + "/token",config);
+  retrieveUserPost: function (token,tokenEntire) {
+    const config = { token,tokenEntire };
+    return axios.post(BASE_USR + "/token", config);
   },
   retrieveAllUsers: function () {
     return axios.get(BASE_USR);
@@ -86,6 +83,10 @@ var API = {
   validateFirebase: function (user) {
     return axios.post(BASE_USR + "/validateFirebase", user);
   }
+  // verifyTokenFirebase(token) {
+  //   const config = { token: token };
+  //   return axios.get(BASE_USR + "/verifyTokenFirebase", config);
+  // }
 };
 
 module.exports = API;

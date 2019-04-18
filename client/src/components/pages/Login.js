@@ -56,7 +56,7 @@ class Login extends React.Component {
         var tokenSignature = currentUser.stsTokenManager.accessToken;
         tokenSignature = tokenSignature.split(".")[2];
         sessionStorage.setItem("token", tokenSignature);
-        //sessionStorage.setItem("full",currentUser.stsTokenManager.accessToken);
+        sessionStorage.setItem("tokenEntire", currentUser.stsTokenManager.accessToken);
         window.location.href = "/appointments"
       }
     }
@@ -76,8 +76,8 @@ class Login extends React.Component {
           name: user.displayName,
           token: token
         };
-        if (token) { 
-          API.validateFirebase(user); 
+        if (token) {
+          API.validateFirebase(user);
           window.location.href = "/appointments";
         }
       });

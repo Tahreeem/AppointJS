@@ -1,6 +1,13 @@
 const db = require("../models");
 require("moment/locale/en-ca.js");
 var moment = require("moment");
+const admin = require('firebase-admin');
+const serviceAccount = require("../ServiceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://project3-8b62e.firebaseio.com'
+});
 
 /**
  * If user ID exists, refresh the name
@@ -59,7 +66,7 @@ module.exports = {
   },
 
   logout: async function (req, res) {
-    return db.Session.deleteMany({}, result => {return result});
+    return db.Session.deleteMany({}, result => { return result });
   },
 
   /**
@@ -127,18 +134,7 @@ module.exports = {
       });
   },
   findUserByTokenPost: function (req, res) {
-    // upsert on userId
-    const current = new Date();
-    var expiryDate = new Date();
-    expiryDate.setMinutes = current.getMinutes + 20;
-    return db.Session.findOneAndUpdate(
-      { tokenId: req.params.token, expiryDate: { $gte: current } },
-      { expiryDate: expiryDate },
-      { new: true, upsert: true }
-    ).then(dbModel => res.json(dbModel))
-    .catch(err => res.status(422).json(err));
-  },
-  findUserByTokenPost2: function (req, res) {
+    verifyTokenFirebase(String(req.body.tokenEntire));
     // upsert on userId
     const current = new Date();
     var expiryDate = new Date();
@@ -149,6 +145,24 @@ module.exports = {
       { expiryDate: expiryDate },
       { new: true, upsert: false }
     ).then(dbModel => res.json(dbModel))
-    .catch(err => res.status(422).json(err));
-  },
+      .catch(err => res.status(422).json(err));
+  }
 };
+
+
+function verifyTokenFirebase(token) {
+  console.log("something");
+  //var meow = JSON.stringify(req.body.token);
+  //meow = JSON.parse(meow);
+  //var meow =String.raw(req.params.token);
+  return admin.auth().verifyIdToken(token)
+    .then(function (decodedToken) {
+      console.log("decodedToken:",decodedToken);
+      //res.json(decodedToken);
+      return true;
+    }).catch(function (error) {
+      console.log("error:",error);
+      //res.json(error);
+      return false;
+    });
+}
