@@ -76,8 +76,8 @@ module.exports = {
       .catch(err => res.status(422).json(err));;
   },
 
-  logout: function (req, res) {
-    res.end();
+  logout: async function (req, res) {
+    return db.Session.deleteMany({}, result => {return result});
   },
 
   /**
