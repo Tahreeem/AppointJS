@@ -8,8 +8,6 @@ router
   .put(userController.updateUser)
   .get(userController.retrieveAll);
 
-// Matches with "/api/user/:id"
-//router.route("/:id").get(userController.findByTokenId);   //findUserByToken);
 router.route("/token").post(userController.findUserByTokenPost);
 
 // Matches with "/api/user/logout"

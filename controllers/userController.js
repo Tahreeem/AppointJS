@@ -134,35 +134,33 @@ module.exports = {
       });
   },
   findUserByTokenPost: function (req, res) {
-    verifyTokenFirebase(String(req.body.tokenEntire));
-    // upsert on userId
-    const current = new Date();
-    var expiryDate = new Date();
-    expiryDate.setMinutes = current.getMinutes + 20;
-    return db.Session.findOneAndUpdate(
-      //{ tokenId: req.body.token, expiryDate: { $gte: current } },  //this didn't work because currently the time set at initialization is current time so that's less than
-      { tokenId: req.body.token },
-      { expiryDate: expiryDate },
-      { new: true, upsert: false }
-    ).then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    var verifiedStatus = verifyTokenFirebase(String(req.body.tokenEntire));
+    if (verifiedStatus) {
+      // upsert on userId
+      const current = new Date();
+      var expiryDate = new Date();
+      expiryDate.setMinutes = current.getMinutes + 20;
+      return db.Session.findOneAndUpdate(
+        //{ tokenId: req.body.token, expiryDate: { $gte: current } },  //this didn't work because currently the time set at initialization is current time so that's less than
+        { tokenId: req.body.token },
+        { expiryDate: expiryDate },
+        { new: true, upsert: false }
+      ).then(dbModel => res.json(dbModel))
+        .catch(err => res.status(422).json(err));
+    }
+    else res.json("Invalid Token!");
   }
+
+
 };
 
 
 function verifyTokenFirebase(token) {
-  console.log("something");
-  //var meow = JSON.stringify(req.body.token);
-  //meow = JSON.parse(meow);
-  //var meow =String.raw(req.params.token);
   return admin.auth().verifyIdToken(token)
     .then(function (decodedToken) {
-      console.log("decodedToken:",decodedToken);
-      //res.json(decodedToken);
       return true;
     }).catch(function (error) {
-      console.log("error:",error);
-      //res.json(error);
+      //console.log("error:",error);
       return false;
     });
 }

@@ -83,10 +83,6 @@ var API = {
   validateFirebase: function (user) {
     return axios.post(BASE_USR + "/validateFirebase", user);
   }
-  // verifyTokenFirebase(token) {
-  //   const config = { token: token };
-  //   return axios.get(BASE_USR + "/verifyTokenFirebase", config);
-  // }
 };
 
 module.exports = API;
