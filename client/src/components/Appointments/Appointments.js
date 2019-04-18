@@ -151,8 +151,6 @@ export default class Appointment extends Component {
   }
 
   removeEvent(items, item) {
-    // console.log ("event removed " + JSON.stringify(item));
-    // remove the item from the database using API
     API.retrieveApptById(item._id.toString())
       .then(appt => {
 
