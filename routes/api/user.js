@@ -15,7 +15,7 @@ router.route("/:id").get(userController.findByTokenId);   //findUserByToken);
 router.route("/tokensignin").post(userController.validateOauthID);
 
 // Matches with "/api/user/logout"
-router.route("/logout").post(userController.logout);
+router.route("/logout").delete(userController.logout);
 
 // Matches with "/api/user/initializeuser"
 router.route("/initializeuser").post(userController.initializeUser);

@@ -63,8 +63,8 @@ var API = {
     console.log(config);
     return axios.post(BASE_APPT + "/All", config);
   },
-  logout: function (config) {
-    return axios.post(BASE_USR + "/logout", config);
+  logout: function () {
+    return axios.delete(BASE_USR + "/logout");
   },
   loginPost: function () {
     var id_token = sessionStorage.getItem("token");
