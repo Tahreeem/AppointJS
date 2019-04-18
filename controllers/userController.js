@@ -1,24 +1,6 @@
 const db = require("../models");
-const { OAuth2Client } = require("google-auth-library");
-const client = new OAuth2Client(
-  "302735331685-j2de3ss9t9pcmout25hjo0e0lg0d550v.apps.googleusercontent.com"
-);
-const axios = require("axios");
-
-async function verify(token) {
-  const ticket = await client.verifyIdToken({
-    idToken: token,
-    audience:
-      "302735331685-j2de3ss9t9pcmout25hjo0e0lg0d550v.apps.googleusercontent.com"
-  });
-  const payload = ticket.getPayload();
-  const userid = payload["sub"];
-
-  console.log("user id " + userid);
-  // If request specified a G Suite domain:
-  //const domain = payload['hd'];
-  return payload;
-}
+require("moment/locale/en-ca.js");
+var moment = require("moment");
 
 /**
  * If user ID exists, refresh the name
@@ -118,49 +100,6 @@ module.exports = {
         res.status(422).json(err);
       });
   },
-  /**
-   * Validates id token from user
-   * if the token is valid, upserts user to user collection
-   * @param {*} req
-   * @param {*} res
-   */
-  validateOauthID: function (req, res) {
-    var token = req.body.idtoken;
-    // test code
-    // return new Promise ((resolve, reject ) => {
-    //   token="abc1234def";
-    //   resolve({given_name: "f",email: "f@gmail.com"})})
-    verify(req.body.idtoken)  //req.body.idtoken
-      .then(result => {
-        //console.log ("result from firebase" + JSON.stringify(result));
-        if (!(result.name && result.email && result.email_verified)) {
-          throw err("invalid token");
-        }
-        return result;
-      })
-      .then(result => findUserByUserId(result.given_name, result.email))
-      .then(user => {
-        return db.Session.findOneAndUpdate(
-          { user: user._id },
-          {
-            tokenId: token,
-            expiryDate: new Date(),
-            user: user._id,
-            name: user.given_name
-          },
-          { returnNewDocument: true, upsert: true }
-        );
-      })
-      .then(() => {
-        res.status(200).json({
-          token: token
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(422).json(err);
-      });
-  },
   validateFirebase: async function (req, res) {
     var token = req.body.token;
     return findUserByUserId(req.body.name, req.body.email)
@@ -186,5 +125,29 @@ module.exports = {
         console.log(err);
         res.status(422).json(err);
       });
-  }
+  },
+  findUserByTokenPost: function (req, res) {
+    // upsert on userId
+    const current = new Date();
+    var expiryDate = new Date();
+    expiryDate.setMinutes = current.getMinutes + 3;
+    return db.Session.findOneAndUpdate(
+      { tokenId: req.params.token, expiryDate: { $gte: current } },
+      { expiryDate: expiryDate },
+      { new: true, upsert: true }
+    ).then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
+  },
+  findUserByTokenPost2: function (req, res) {
+    // upsert on userId
+    const current = new Date();
+    var expiryDate = new Date();
+    expiryDate.setMinutes = current.getMinutes + 3;
+    return db.Session.findOneAndUpdate(
+      { tokenId: req.body.token, expiryDate: { $gte: current } },
+      { expiryDate: expiryDate },
+      { new: true, upsert: true }
+    ).then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
+  },
 };

@@ -7,6 +7,13 @@ var API = {
   retrieveUser: function (token) {
     return axios.get(BASE_USR + "/" + token);
   },
+  retrieveUserPost: function (token) {
+    return axios.post(BASE_USR + "/" + token);
+  },
+  retrieveUserPost2: function (token) {
+    const config = { token };
+    return axios.post(BASE_USR + "/token",config);
+  },
   retrieveAllUsers: function () {
     return axios.get(BASE_USR);
   },

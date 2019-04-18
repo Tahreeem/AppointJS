@@ -55,6 +55,8 @@ export default class Appointment extends Component {
   componentDidMount() {
     let token = sessionStorage.getItem("token");
     API.retrieveUser(token)
+    //API.retrieveUserPost(token)
+    //API.retrieveUserPost2(token)
       .then(session => session.data.user)
       .then(userID => {
         const todayDate = new Date(
@@ -69,8 +71,6 @@ export default class Appointment extends Component {
       })
       .then(result => {
         if (result.status === 200) {
-          //userId = "5c89c22c6611afbd926c61d7";
-          // sessionStorage.setItem("token", JSON.stringify(result.data));
           items = _.map(result.data, booking => {
             var start = new Date(booking.startDate);
             var end = new Date(booking.endDate);
