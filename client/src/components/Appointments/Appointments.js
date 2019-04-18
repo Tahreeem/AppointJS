@@ -54,6 +54,10 @@ export default class Appointment extends Component {
 
   componentDidMount() {
     let token = sessionStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
     //API.retrieveUser(token)
     //API.retrieveUserPost(token)
     API.retrieveUserPost2(token)

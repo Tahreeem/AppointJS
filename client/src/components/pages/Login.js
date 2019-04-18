@@ -53,7 +53,10 @@ class Login extends React.Component {
         currentUser = JSON.stringify(currentUser);
         currentUser = JSON.parse(currentUser);
         //sessionStorage.setItem("expirationTime", currentUser.stsTokenManager.expirationTime);
-        sessionStorage.setItem("token", currentUser.stsTokenManager.accessToken);
+        var tokenSignature = currentUser.stsTokenManager.accessToken;
+        tokenSignature = tokenSignature.split(".")[2];
+        sessionStorage.setItem("token", tokenSignature);
+        //sessionStorage.setItem("full",currentUser.stsTokenManager.accessToken);
         window.location.href = "/appointments"
       }
     }
