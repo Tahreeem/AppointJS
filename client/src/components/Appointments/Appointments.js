@@ -54,9 +54,9 @@ export default class Appointment extends Component {
 
   componentDidMount() {
     let token = sessionStorage.getItem("token");
-    API.retrieveUser(token)
+    //API.retrieveUser(token)
     //API.retrieveUserPost(token)
-    //API.retrieveUserPost2(token)
+    API.retrieveUserPost2(token)
       .then(session => session.data.user)
       .then(userID => {
         const todayDate = new Date(

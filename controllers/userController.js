@@ -110,7 +110,7 @@ module.exports = {
           },
           {
             user: user._id,
-            expiryDate: new Date(),
+            expiryDate: new Date(),                          //UPDATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             name: user.given_name
           },
           { returnNewDocument: true, upsert: true }
@@ -130,7 +130,7 @@ module.exports = {
     // upsert on userId
     const current = new Date();
     var expiryDate = new Date();
-    expiryDate.setMinutes = current.getMinutes + 3;
+    expiryDate.setMinutes = current.getMinutes + 20;
     return db.Session.findOneAndUpdate(
       { tokenId: req.params.token, expiryDate: { $gte: current } },
       { expiryDate: expiryDate },
@@ -142,11 +142,12 @@ module.exports = {
     // upsert on userId
     const current = new Date();
     var expiryDate = new Date();
-    expiryDate.setMinutes = current.getMinutes + 3;
+    expiryDate.setMinutes = current.getMinutes + 20;
     return db.Session.findOneAndUpdate(
-      { tokenId: req.body.token, expiryDate: { $gte: current } },
+      //{ tokenId: req.body.token, expiryDate: { $gte: current } },  //this didn't work because currently the time set at initialization is current time so that's less than
+      { tokenId: req.body.token },
       { expiryDate: expiryDate },
-      { new: true, upsert: true }
+      { new: true, upsert: false }
     ).then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
   },
