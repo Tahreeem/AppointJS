@@ -14,10 +14,9 @@ class ConnectionList extends React.Component {
   };
 
   componentDidMount() {
-    let token = sessionStorage.getItem("token");
-    let tokenEntire = sessionStorage.getItem("tokenEntire");
-    console.log("---Token---" + token);
-    API.retrieveUserPost(token,tokenEntire)
+    let usertoken = sessionStorage.getItem("token");
+    console.log("---Token---" + usertoken);
+    API.retrieveUser(usertoken)
       .then(session => session.data.user)
       .then(userId => {
         console.log("---userId---" + userId);
