@@ -153,21 +153,23 @@ module.exports = {
       });
   },
   findUserByTokenPost: function (req, res) {
-    var verifiedStatus = verifyTokenFirebase(String(req.body.tokenEntire));
-    if (verifiedStatus) {
-      // upsert on userId
-      const current = new Date();
-      var expiryDate = new Date();
-      expiryDate.setMinutes = current.getMinutes + 20;
-      return db.Session.findOneAndUpdate(
-        //{ tokenId: req.body.token, expiryDate: { $gte: current } },  //this didn't work because currently the time set at initialization is current time so that's less than
-        { tokenId: req.body.token },
-        { expiryDate: expiryDate },
-        { new: true, upsert: false }
-      ).then(dbModel => res.json(dbModel))
-        .catch(err => res.status(422).json(err));
-    }
-    else res.json("Invalid Token!");
+    verifyTokenFirebase(String(req.body.tokenEntire))
+      .then((verifiedStatus) => {
+        if (verifiedStatus) {
+          // upsert on userId
+          const current = new Date();
+          var expiryDate = new Date();
+          expiryDate.setMinutes = current.getMinutes + 20;
+          return db.Session.findOneAndUpdate(
+            //{ tokenId: req.body.token, expiryDate: { $gte: current } },  //this didn't work because currently the time set at initialization is current time so that's less than
+            { tokenId: req.body.token },
+            { expiryDate: expiryDate },
+            { new: true, upsert: false }
+          ).then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+        }
+        else res.json("Invalid Token!");
+      });
   }
 
 
