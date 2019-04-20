@@ -4,9 +4,10 @@ const userController = require("../../controllers/userController");
 // Matches with "/api/user"
 router
   .route("/")
-  .post(userController.register)
+  //.post(userController.register)
   .put(userController.updateUser)
-  .get(userController.retrieveAll);
+  //.get(userController.retrieveAll);
+  .post(userController.retrieveAllUsersPost);
 
 router.route("/token").post(userController.findUserByTokenPost);
 

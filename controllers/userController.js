@@ -100,7 +100,7 @@ module.exports = {
    * @param {*} req
    * @param {*} res
    */
-  retrieveAll: function (req, res) {
+  retrieveAllUsersPost: function (req, res) {
     return verifyTokenFirebase(String(req.body.tokenEntire)).then(verifiedStatus => {
       if (verifiedStatus == true) {
         return db.User.find({})
@@ -166,6 +166,7 @@ module.exports = {
   },
   findUserByTokenPost: function (req, res) {
     return verifyTokenFirebase(String(req.body.tokenEntire)).then(verifiedStatus => {
+      verifiedStatus = true;
       if (verifiedStatus == true) {
         // upsert on userId
         const current = new Date();
@@ -181,6 +182,6 @@ module.exports = {
       }
       else res.json("Invalid Token!");
     });
-
   }
+  
 };

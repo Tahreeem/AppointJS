@@ -17,14 +17,14 @@ class ConnectionList extends React.Component {
     let token = sessionStorage.getItem("token");
     let tokenEntire = sessionStorage.getItem("tokenEntire");
     console.log("---Token---" + token);
-    API.retrieveUserPost(token,tokenEntire)
+    API.retrieveUserPost(token, tokenEntire)
       .then(session => session.data.user)
       .then(userId => {
         console.log("---userId---" + userId);
         this.setState({ userId: userId });
       });
 
-    API.retrieveAllUsers()
+    API.retrieveAllUsersPost(tokenEntire)
       .then(result => {
         if (result.status === 200) {
           console.log("---retrieveAllUsers.result.data---");

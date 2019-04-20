@@ -7,12 +7,16 @@ var API = {
   retrieveUser: function (token) {
     return axios.get(BASE_USR + "/" + token);
   },
-  retrieveUserPost: function (token,tokenEntire) {
-    const config = { token,tokenEntire };
+  retrieveUserPost: function (token, tokenEntire) {
+    const config = { token, tokenEntire };
     return axios.post(BASE_USR + "/token", config);
   },
   retrieveAllUsers: function () {
     return axios.get(BASE_USR);
+  },
+  retrieveAllUsersPost: function (tokenEntire) {
+    const config = { tokenEntire };
+    return axios.post(BASE_USR, config);
   },
   updateUser: function (userId, user) {
     const config = { userId, user };
@@ -69,13 +73,6 @@ var API = {
   },
   logout: function () {
     return axios.delete(BASE_USR + "/logout");
-  },
-  loginPost: function () {
-    var id_token = sessionStorage.getItem("token");
-    const config = {
-      idtoken: id_token
-    };
-    return axios.post(BASE_USR + "/tokensignin", config);
   },
   initializeUser: function (user) {
     return axios.post(BASE_USR + "/initializeUser", user); //{user:user}
