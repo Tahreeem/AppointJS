@@ -166,7 +166,7 @@ module.exports = {
   },
   findUserByTokenPost: function (req, res) {
     return verifyTokenFirebase(String(req.body.tokenEntire)).then(verifiedStatus => {
-      verifiedStatus = true;
+      //verifiedStatus = true;
       if (verifiedStatus == true) {
         // upsert on userId
         const current = new Date();
@@ -183,5 +183,5 @@ module.exports = {
       else res.json("Invalid Token!");
     });
   }
-  
+
 };
